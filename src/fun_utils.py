@@ -22,7 +22,7 @@ def load_data(filename):
     data = read_csv(filename)
     z = np.array(data)
     y = z[:, 0]
-    X = z[:, 1:]
+    X = z[:, 1:]#
     return X, y
 
 
