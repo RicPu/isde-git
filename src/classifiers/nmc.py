@@ -30,12 +30,41 @@ class NMC(object):
     def centroids(self):
         return self._centroids
 
+    @centroids.setter
+    def centroids(self, value):
+        self._centroids = value
+
     @property
     def class_labels(self):
         return self._class_labels
 
+    @class_labels.setter
+    def class_labels(self, value):
+        self._class_labels = value
+
     def fit(self, xtr, ytr):
-        pass
+        """
+        Trains the classifier by computing the mean (centroid) of each class based on the training data.
+
+        Parameters
+        ----------
+        xtr : np.ndarray
+            A 2D array of shape (n_samples, n_features) representing the training data, where each row corresponds to a sample.
+        ytr : np.ndarray
+            A 1D array of shape (n_samples,) representing the class labels for the training data.
+
+        Returns
+        -------
+        self : NMC
+            The trained classifier.
+        """
+        self.class_labels = np.unique(ytr)
+        n_classes = self.class_labels.size
+        self.centroids = np.zeros(shape=(n_classes, xtr.shape[1]))
+        for k in range(n_classes):
+            idx = xtr[ytr == self.class_labels[k], :]
+            self.centroids[k, :] = np.mean(idx, axis=0)
+        return self
 
     def predict(self, xts):
         pass
