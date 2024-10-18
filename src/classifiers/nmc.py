@@ -38,4 +38,28 @@ class NMC(object):
         pass
 
     def predict(self, xts):
-        pass
+        """
+        Predicts the class labels for the given test data based on the nearest centroid.
+
+        Parameters
+        ----------
+        xts : np.ndarray
+            A 2D array of shape (n_samples, n_features) representing the test data to classify.
+
+        Returns
+        -------
+        np.ndarray
+            A 1D array of shape (n_samples,) containing the predicted class labels for each sample.
+
+        Raises
+        ------
+        ValueError
+            If the classifier has not been trained (i.e., if centroids are None).
+        """
+        if self.centroids is None:
+            raise ValueError("The classifier is not trained. Call fit!")
+
+        dist_euclidean = euclidean_distances(xts, self.centroids)
+        idx_min = np.argmin(dist_euclidean, axis=1)
+        y_pred = self._class_labels[idx_min]
+        return y_pred
